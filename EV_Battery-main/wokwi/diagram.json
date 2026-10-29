@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "author": "EV Battery Monitor",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-v1",
+      "id": "esp",
+      "top": -15,
+      "left": -3,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "voltage_pot",
+      "top": -150,
+      "left": 210,
+      "attrs": { "value": "512" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "current_pot",
+      "top": -20,
+      "left": 210,
+      "attrs": { "value": "85" }
+    },
+    {
+      "type": "wokwi-ds18b20",
+      "id": "battery_temp",
+      "top": 140,
+      "left": 220,
+      "attrs": { "temperature": "28", "deviceID": "010203040506" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "temp_pullup",
+      "top": 240,
+      "left": 190,
+      "rotate": 90,
+      "attrs": { "value": "4700" }
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled",
+      "top": 95,
+      "left": -220,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": 250,
+      "left": -120,
+      "attrs": { "mode": "smooth", "volume": "0.3" }
+    }
+  ],
+  "connections": [
+    ["esp:3V3", "voltage_pot:VCC", "red", []],
+    ["esp:GND.1", "voltage_pot:GND", "black", []],
+    ["voltage_pot:SIG", "esp:34", "green", []],
+    ["esp:3V3", "current_pot:VCC", "red", []],
+    ["esp:GND.1", "current_pot:GND", "black", []],
+    ["current_pot:SIG", "esp:35", "green", []],
+    ["battery_temp:VCC", "esp:3V3", "red", []],
+    ["battery_temp:GND", "esp:GND.1", "black", []],
+    ["battery_temp:DQ", "esp:4", "green", []],
+    ["battery_temp:DQ", "temp_pullup:1", "green", []],
+    ["temp_pullup:2", "esp:3V3", "red", []],
+    ["oled:VCC", "esp:3V3", "red", []],
+    ["oled:GND", "esp:GND.1", "black", []],
+    ["oled:SDA", "esp:21", "blue", []],
+    ["oled:SCL", "esp:22", "blue", []],
+    ["buzzer:1", "esp:GND.1", "black", []],
+    ["buzzer:2", "esp:27", "purple", []]
+  ],
+  "dependencies": {}
+}

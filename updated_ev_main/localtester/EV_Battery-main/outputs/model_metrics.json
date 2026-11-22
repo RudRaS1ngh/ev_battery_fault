@@ -1,0 +1,68 @@
+{
+    "algorithm": "Isolation Forest",
+    "training_approach": "Approach B: train only on normal rows from the training split",
+    "target_definition": {
+        "0": "Normal",
+        "1": "Fault/anomaly according to dataset label"
+    },
+    "contamination": 0.02,
+    "comparison": [
+        {
+            "accuracy": 0.7166666666666667,
+            "precision": 0.9714285714285714,
+            "recall": 0.68,
+            "f1_score": 0.8,
+            "confusion_matrix": [
+                [
+                    9,
+                    1
+                ],
+                [
+                    16,
+                    34
+                ]
+            ],
+            "test_samples": 60,
+            "normal_training_samples": 30,
+            "anomaly_predictions": 35,
+            "model": "model_a",
+            "algorithm": "Isolation Forest (unsupervised)",
+            "features": [
+                "voltage_V",
+                "current_A",
+                "battery_temp_C"
+            ],
+            "total_training_partition_samples": 180,
+            "contamination": 0.02
+        },
+        {
+            "accuracy": 0.8166666666666667,
+            "precision": 0.975609756097561,
+            "recall": 0.8,
+            "f1_score": 0.8791208791208791,
+            "confusion_matrix": [
+                [
+                    9,
+                    1
+                ],
+                [
+                    10,
+                    40
+                ]
+            ],
+            "test_samples": 60,
+            "normal_training_samples": 30,
+            "anomaly_predictions": 41,
+            "model": "model_b",
+            "algorithm": "Isolation Forest (unsupervised)",
+            "features": [
+                "voltage_V",
+                "current_A",
+                "battery_temp_C",
+                "ambient_temp_C"
+            ],
+            "total_training_partition_samples": 180,
+            "contamination": 0.02
+        }
+    ]
+}

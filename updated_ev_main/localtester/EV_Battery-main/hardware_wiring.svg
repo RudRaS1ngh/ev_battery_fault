@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000" viewBox="0 0 1500 1000" role="img" aria-labelledby="title description">
+  <title id="title">ESP32 battery monitor wiring for INA219, DS18B20, DHT22, and ILI9341</title>
+  <desc id="description">Conceptual wiring showing an ESP32 connected to an INA219 by I2C, one DS18B20 battery sensor, a DHT22 ambient temperature and humidity sensor, an ILI9341 SPI TFT, a transistor-driven buzzer, and a fused 2S battery supply.</desc>
+  <defs>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #17212b; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 17px; fill: #405060; }
+      .component { fill: #f7fafc; stroke: #253746; stroke-width: 2; rx: 12; }
+      .sensor { fill: #eef7ff; stroke: #27628a; stroke-width: 2; rx: 10; }
+      .power { fill: none; stroke: #cf3e32; stroke-width: 4; }
+      .ground { fill: none; stroke: #263746; stroke-width: 3; }
+      .spi { fill: none; stroke: #245caa; stroke-width: 3; }
+      .i2c { fill: none; stroke: #7a4aa1; stroke-width: 3; }
+      .onewire { fill: none; stroke: #18845b; stroke-width: 4; }
+      .signal { fill: none; stroke: #bb6b16; stroke-width: 3; }
+      .thin { stroke-width: 2; }
+      .label { font-size: 17px; font-weight: 600; }
+      .pin { font-size: 15px; }
+      .note { font-size: 15px; }
+      .small { font-size: 13px; fill: #405060; }
+      .warn { fill: #fff3e0; stroke: #c97700; stroke-width: 2; rx: 10; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#405060"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1500" height="1000" fill="#ffffff"/>
+  <text x="50" y="52" class="title">ESP32 2S Battery Monitor — Sensor Wiring</text>
+  <text x="50" y="82" class="subtitle">INA219 I²C • battery DS18B20 • ambient DHT22 / humidity • ILI9341 SPI TFT</text>
+
+  <!-- Supply and monitored power path -->
+  <rect x="50" y="125" width="250" height="165" class="component"/>
+  <text x="175" y="160" text-anchor="middle" class="label">Protected 2S 18650 pack</text>
+  <text x="175" y="190" text-anchor="middle" class="pin">6.0–8.4 V nominal range</text>
+  <text x="75" y="235" class="pin">+ (positive)</text>
+  <text x="75" y="270" class="pin">− (negative)</text>
+  <text x="260" y="235" class="pin">+</text>
+  <text x="260" y="270" class="pin">−</text>
+
+  <rect x="355" y="150" width="115" height="105" class="component"/>
+  <text x="412" y="190" text-anchor="middle" class="label">Fuse</text>
+  <text x="412" y="220" text-anchor="middle" class="pin">rated to setup</text>
+  <path d="M300 225 H355" class="power"/>
+  <rect x="505" y="150" width="130" height="105" class="component"/>
+  <text x="570" y="190" text-anchor="middle" class="label">Switch</text>
+  <text x="570" y="220" text-anchor="middle" class="pin">on positive rail</text>
+  <path d="M470 225 H505" class="power"/>
+
+  <rect x="680" y="125" width="305" height="165" class="sensor"/>
+  <text x="832" y="160" text-anchor="middle" class="label">INA219 breakout</text>
+  <text x="705" y="195" class="pin">VIN+ / battery side</text>
+  <text x="705" y="225" class="pin">VIN− / load side</text>
+  <text x="705" y="260" class="small">Use a board/shunt rated for full motor load current.</text>
+  <path d="M635 225 H680" class="power"/>
+  <path d="M985 225 H1090" class="power"/>
+  <text x="1035" y="210" text-anchor="middle" class="small">to vehicle load / driver supply</text>
+  <path d="M175 270 V325 H1090 V225" class="ground"/>
+  <text x="540" y="317" text-anchor="middle" class="small">Battery negative / system ground (only where the chosen measurement topology permits)</text>
+
+  <!-- Regulated supply -->
+  <rect x="50" y="365" width="250" height="130" class="component"/>
+  <text x="175" y="403" text-anchor="middle" class="label">Buck converter</text>
+  <text x="175" y="433" text-anchor="middle" class="pin">Battery input → regulated 5 V</text>
+  <text x="175" y="464" text-anchor="middle" class="small">Set and verify output before ESP32 connection</text>
+  <path d="M175 270 V365" class="power"/>
+  <path d="M175 495 V530 H430" class="power"/>
+
+  <!-- ESP32 -->
+  <rect x="430" y="370" width="400" height="390" class="component"/>
+  <text x="630" y="410" text-anchor="middle" class="label">ESP32 DevKit</text>
+  <text x="465" y="455" class="pin">5V / VIN  ← regulated 5 V</text>
+  <text x="465" y="490" class="pin">3V3  → logic / sensors</text>
+  <text x="465" y="525" class="pin">GND  → common logic ground</text>
+  <text x="465" y="550" class="pin">GPIO16 TFT DC • GPIO17 TFT reset</text>
+  <text x="465" y="585" class="pin">GPIO18 SCK  → ILI9341 SCK</text>
+  <text x="465" y="620" class="pin">GPIO19 MISO ← ILI9341 SDO</text>
+  <text x="465" y="655" class="pin">GPIO23 MOSI → ILI9341 SDI</text>
+  <text x="465" y="690" class="pin">GPIO5 TFT CS • GPIO4 DS18B20 DQ</text>
+  <text x="465" y="725" class="pin">GPIO13 DHT22 • GPIO21/22 INA219 I²C</text>
+  <text x="465" y="750" class="small">GPIO27 buzzer • common ground • motors not controlled here</text>
+
+  <!-- INA219 I2C -->
+  <path d="M830 725 H900 V325 H1085 V185" class="i2c"/>
+  <path d="M830 725 H920 V335 H1105 V185" class="i2c"/>
+  <rect x="1065" y="125" width="290" height="130" class="sensor"/>
+  <text x="1210" y="157" text-anchor="middle" class="label">INA219 I²C interface</text>
+  <text x="1090" y="190" class="pin">SDA ← GPIO21 • SCL ← GPIO22</text>
+  <text x="1090" y="220" class="pin">VCC / GND per breakout specification</text>
+  <path d="M830 490 H900 V275 H1035 V275 H1035 V175 H1065" class="power thin"/>
+  <text x="935" y="265" class="small">3.3 V logic (confirm breakout)</text>
+  <path d="M830 525 H920 V290 H1045 V290 H1045 V245 H1065" class="ground thin"/>
+
+  <!-- OneWire sensors -->
+  <rect x="890" y="390" width="245" height="100" class="sensor"/>
+  <text x="1012" y="425" text-anchor="middle" class="label">DS18B20</text>
+  <text x="1012" y="455" text-anchor="middle" class="pin">Battery temperature</text>
+  <rect x="1190" y="390" width="245" height="100" class="sensor"/>
+  <text x="1312" y="425" text-anchor="middle" class="label">DHT22</text>
+  <text x="1312" y="455" text-anchor="middle" class="pin">Ambient temperature + RH</text>
+  <path d="M830 490 H865 V445 H890" class="power thin"/>
+  <path d="M865 445 H1190" class="power thin"/>
+  <text x="1015" y="379" class="small">3V3 shared • DHT DATA → GPIO13</text>
+  <path d="M830 525 H875 V475 H890" class="ground thin"/>
+  <path d="M875 475 H1190" class="ground thin"/>
+  <path d="M830 725 H850 V510 H890" class="onewire"/>
+  <text x="1010" y="515" class="small">GPIO4 OneWire data</text>
+  <rect x="1060" y="535" width="205" height="65" class="component"/>
+  <text x="1162" y="562" text-anchor="middle" class="pin">One 4.7 kΩ pull-up</text>
+  <text x="1162" y="584" text-anchor="middle" class="small">DATA ↔ 3V3</text>
+  <path d="M1060 567 H850 V510" class="onewire thin"/>
+  <path d="M1265 567 H1385 V445" class="power thin"/>
+
+  <!-- ILI9341 SPI TFT -->
+  <rect x="890" y="650" width="245" height="115" class="sensor"/>
+  <text x="1012" y="687" text-anchor="middle" class="label">2.8&quot; ILI9341 TFT</text>
+  <text x="915" y="720" class="pin">SCK/MOSI/MISO: 18/23/19</text>
+  <text x="915" y="748" class="pin">CS/DC/RST: 5/16/17</text>
+  <path d="M830 490 H865 V670 H890" class="power thin"/>
+  <path d="M830 525 H875 V755 H890" class="ground thin"/>
+  <path d="M830 585 H850 V710 H890" class="spi"/>
+  <path d="M830 655 H860 V735 H890" class="spi"/>
+  <text x="1035" y="635" class="small">Logic power per TFT module specification</text>
+
+  <!-- Buzzer driver -->
+  <rect x="1190" y="650" width="245" height="115" class="sensor"/>
+  <text x="1312" y="687" text-anchor="middle" class="label">Passive buzzer</text>
+  <text x="1210" y="720" class="pin">+ → regulated 5 V</text>
+  <text x="1210" y="748" class="pin">− → driver collector</text>
+  <path d="M1312 765 V780" class="signal"/>
+  <rect x="1190" y="780" width="245" height="48" class="component"/>
+  <text x="1312" y="800" text-anchor="middle" class="pin">NPN driver: C ← buzzer− • E → GND</text>
+  <text x="1312" y="820" text-anchor="middle" class="small">GPIO27 → 1 kΩ → base</text>
+  <path d="M830 725 H870 V805 H1190" class="signal"/>
+  <path d="M1190 815 H1165 V825 H875 V525" class="ground thin"/>
+
+  <!-- Explanation and safety -->
+  <rect x="50" y="850" width="1400" height="115" class="warn"/>
+  <text x="75" y="878" class="label">Important configuration and safety notes</text>
+  <text x="75" y="905" class="note">• Model inputs: average cell voltage from the 2S pack, current, DS18B20 battery temperature, DHT22 ambient temperature, and humidity.</text>
+  <text x="75" y="930" class="note">• Use a protected 2S pack, suitable fuse, and INA219/shunt rated for motor-start/stall current. Do not feed motor power through ESP32 logic.</text>
+  <text x="75" y="953" class="note">• Confirm each module pinout and voltage tolerance. This monitor is not a BMS and does not provide cell balancing, cutoff, or motor control.</text>
+
+  <text x="50" y="985" class="small">Signal colors: red = power • dark = ground • blue = SPI • green = OneWire • purple = I²C • orange = buzzer control</text>
+</svg>
